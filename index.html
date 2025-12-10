@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -519,7 +520,6 @@
                         <i class="fas fa-paper-plane"></i>
                     </div>
                     <h2 class="text-xl font-bold text-white">XMAIL</h2>
-                    <span class="premium-badge ml-2">PREMIUM</span>
                 </div>
                 <button class="text-gray-400 hover:text-white text-xl" onclick="closeMobileMenu()">
                     <i class="fas fa-times"></i>
@@ -543,11 +543,11 @@
                     <i class="fas fa-search text-green-400 w-6"></i>
                     <span>Осинт</span>
                 </button>
-                <!-- Обновленная кнопка Premium -->
-                <button class="mobile-nav-item w-full text-left py-4 px-4 text-white font-semibold rounded-xl flex items-center gap-3 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20" data-tab="premium" onclick="switchMobileTab('premium')">
+                <!-- Добавляем Premium в мобильное меню -->
+                <button class="mobile-nav-item w-full text-left py-4 px-4 text-gray-400 font-semibold rounded-xl flex items-center gap-3" data-tab="premium" onclick="switchMobileTab('premium')">
                     <i class="fas fa-crown text-yellow-400 w-6"></i>
-                    <span>Premium (АКТИВНО)</span>
-                    <span class="premium-badge ml-auto">БЕСПЛАТНО</span>
+                    <span>Premium</span>
+                    <span class="premium-badge ml-auto">PRE-ORDER</span>
                 </button>
             </nav>
             
@@ -578,16 +578,21 @@
                         <div class="theme-preview dark active" data-theme="dark" onclick="selectTheme('dark')" title="Тёмная">
                             <div class="w-full h-full rounded-lg"></div>
                         </div>
+                        <div class="theme-preview light" data-theme="light" onclick="selectTheme('light')" title="Светлая">
+                            <div class="w-full h-full rounded-lg"></div>
+                        </div>
                         <div class="theme-preview blue" data-theme="blue" onclick="selectTheme('blue')" title="Синяя">
                             <div class="w-full h-full rounded-lg"></div>
                         </div>
                         <div class="theme-preview purple" data-theme="purple" onclick="selectTheme('purple')" title="Фиолетовая">
                             <div class="w-full h-full rounded-lg"></div>
                         </div>
+                        <div class="theme-preview christmas" data-theme="christmas" onclick="selectTheme('christmas')" title="Рождественская">
+                            <div class="w-full h-full rounded-lg"></div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Язык -->
+<!-- Язык -->
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-3">Язык</label>
                     <select id="languageSelect" class="w-full glass-dark border border-gray-700 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -596,14 +601,15 @@
                     </select>
                 </div>
                 
-                <!-- Статус Premium -->
-                <div class="bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 rounded-xl p-4 text-center">
-                    <div class="flex items-center justify-center gap-3 mb-2">
-                        <i class="fas fa-crown text-yellow-400 text-2xl"></i>
-                        <span class="text-white font-bold text-lg">Premium активирован</span>
+                <!-- Активация Premium ключа -->
+                <div id="premiumActivationSection" style="display: none;">
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Активация Premium</label>
+                    <div class="space-y-3">
+                        <input type="text" id="licenseKeyInput" placeholder="XXXX-XXXX-XXXX-XXXX" class="w-full glass-dark border border-gray-700 text-white rounded-xl px-4 py-3 license-input focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        <button onclick="activatePremium()" class="w-full gradient-bg text-white font-bold py-3 px-6 rounded-xl hover:opacity-90 transition-all duration-300 pulse-glow">
+                            <i class="fas fa-key mr-2"></i>Активировать Premium
+                        </button>
                     </div>
-                    <p class="text-gray-300 text-sm">Все функции доступны бесплатно!</p>
-                    <p class="text-gray-400 text-xs mt-1">Ключи нафиг не нужны - всё работает сразу</p>
                 </div>
                 
                 <!-- Уведомления -->
@@ -666,6 +672,77 @@
         </div>
     </div>
 
+    <!-- Premium Info Modal -->
+    <div class="modal" id="premiumInfoModal">
+        <div class="modal-content glass premium-modal rounded-3xl p-6" style="max-width: 500px;">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-crown text-yellow-400"></i>
+                    <span>Как получить Premium?</span>
+                </h2>
+                <button class="text-gray-400 hover:text-white text-xl" onclick="closePremiumInfo()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="glass-dark rounded-2xl p-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white">Шаг 1: Перейдите в Telegram бота</h3>
+                            <p class="text-gray-400 text-sm">Нажмите кнопку "КУПИТЬ PREMIUM"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-dark rounded-2xl p-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white">Шаг 2: Оплатите предзаказ</h3>
+                            <p class="text-gray-400 text-sm">Используйте Crypto Pay (USDT) для оплаты</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-dark rounded-2xl p-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white">Шаг 3: Получите ключ активации</h3>
+                            <p class="text-gray-400 text-sm">После релиза вам будет выдан лицензионный ключ</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-dark rounded-2xl p-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white">Шаг 4: Активируйте на сайте</h3>
+                            <p class="text-gray-400 text-sm">Введите ключ в разделе "Настройки" → "Активация Premium"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button onclick="closePremiumInfo()" class="gradient-bg text-white font-bold py-3 px-8 rounded-xl hover:opacity-90 transition-all duration-300">
+                        Понятно
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Audio element for sound notifications -->
     <audio id="notificationSound" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/286/286-preview.mp3" type="audio/mpeg">
@@ -682,13 +759,12 @@
                     </div>
                     <div>
                         <h1 class="text-2xl font-black gradient-text">XMAIL</h1>
-                        <p class="text-gray-400 text-xs">Анонимная отправка | rooteam</p>
+                        <p class="text-gray-400 text-xs">Анонимная отправка</p>
                     </div>
-                    <span class="premium-badge">PREMIUM</span>
                 </div>
                 
                 <div class="flex items-center gap-2">
-                    <a href="https://t.me/rooteam" target="_blank" class="glass p-3 rounded-xl text-white hover:bg-white/10 transition-all duration-300">
+                    <a href="https://t.me/tmdback" target="_blank" class="glass p-3 rounded-xl text-white hover:bg-white/10 transition-all duration-300">
                         <i class="fab fa-telegram text-blue-400"></i>
                     </a>
                     <button onclick="openMobileMenu()" class="glass p-3 rounded-xl text-white hover:bg-white/10 transition-all duration-300">
@@ -707,15 +783,14 @@
                     </div>
                     <div>
                         <h1 class="text-4xl md:text-5xl font-black gradient-text">XMAIL</h1>
-                        <p class="text-gray-400 text-sm mt-1">Анонимная отправка писем | Сайт ебнут командой <span class="text-blue-400 font-bold">rooteam</span></p>
+                        <p class="text-gray-400 text-sm mt-1">Анонимная отправка писем</p>
                     </div>
-                    <span class="premium-badge ml-4">PREMIUM АКТИВНО</span>
                 </div>
                 
                 <div class="flex items-center gap-3">
-                    <a href="https://t.me/rooteam" target="_blank" class="glass px-5 py-3 rounded-xl text-white hover:bg-white/10 transition-all duration-300 glow-hover flex items-center gap-3">
+                    <a href="https://t.me/tmdback" target="_blank" class="glass px-5 py-3 rounded-xl text-white hover:bg-white/10 transition-all duration-300 glow-hover flex items-center gap-3">
                         <i class="fab fa-telegram text-blue-400 text-xl"></i>
-                        <span class="font-medium">rooteam</span>
+                        <span class="font-medium">Наш канал</span>
                     </a>
                     
                     <button onclick="openSettings()" class="glass px-5 py-3 rounded-xl text-white hover:bg-white/10 transition-all duration-300 glow-hover flex items-center gap-3">
@@ -742,11 +817,11 @@
                     <i class="fas fa-search text-green-400"></i>
                     <span>Осинт</span>
                 </button>
-                <!-- Обновленная кнопка Premium -->
-                <button class="nav-tab flex-1 py-4 px-6 text-white font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-3 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20" data-tab="premium">
+                <!-- Добавляем Premium в desktop navigation -->
+                <button class="nav-tab flex-1 py-4 px-6 text-gray-400 font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-3" data-tab="premium">
                     <i class="fas fa-crown text-yellow-400"></i>
                     <span>Premium</span>
-                    <span class="premium-badge ml-2">БЕСПЛАТНО</span>
+                    <span class="premium-badge ml-2">PRE-ORDER</span>
                 </button>
             </div>
         </header>
@@ -764,7 +839,6 @@
                                     <i class="fas fa-rocket"></i>
                                 </div>
                                 <h2 class="text-xl md:text-2xl font-bold text-white">Отправка письма</h2>
-                                <span class="premium-badge ml-2">PREMIUM</span>
                             </div>
                             
                             <form id="emailForm" class="space-y-4 md:space-y-6">
@@ -876,16 +950,15 @@
                         <div class="glass-dark rounded-2xl p-4 md:p-6 border-l-4 border-blue-500 transition-all duration-300 hover:transform hover:scale-105 glow-hover">
                             <div class="flex items-center gap-3 mb-3 md:mb-4">
                                 <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl gradient-bg flex items-center justify-center text-white">
-                                    <i class="fas fa-crown"></i>
+                                    <i class="fas fa-bullhorn"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-white text-sm md:text-base">Premium теперь бесплатен!</h3>
-                                    <p class="text-xs text-gray-400">Сегодня, 15:30</p>
+                                    <h3 class="font-bold text-white text-sm md:text-base">Реализация v2.1</h3>
+                                    <p class="text-xs text-gray-400">Сегодня, 12:25</p>
                                 </div>
                             </div>
                             <p class="text-gray-300 text-xs md:text-sm leading-relaxed">
-                                Все функции XMAIL теперь полностью бесплатны! Ключи нафиг не нужны - всё работает сразу. 
-                                Сайт ебнут командой <span class="text-blue-400 font-bold">rooteam</span>.
+                                Всех с новым годом! Пока пишем релиз - решили добавить новогоднее оформление КРЯ КРЯ.
                             </p>
                         </div>
                         
@@ -895,30 +968,29 @@
                                     <i class="fas fa-check-circle"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-white text-sm md:text-base">Все функции разблокированы</h3>
-                                    <p class="text-xs text-gray-400">Сегодня, 15:15</p>
+                                    <h3 class="font-bold text-white text-sm md:text-base">БЕТА-ТЕСТ</h3>
+                                    <p class="text-xs text-gray-400">Сегодня, 12:15</p>
                                 </div>
                             </div>
                             <p class="text-gray-300 text-xs md:text-sm leading-relaxed">
-                                Все Premium функции теперь доступны каждому пользователю бесплатно. 
-                                Наслаждайтесь полным функционалом без ограничений!
+                                Бета-тестирование УЖЕ доступно КРЯ! 
+                                Найдешь баги - пиши нам. Вознаграждение будет твоим!
                             </p>
                         </div>
                         
                         <div class="glass-dark rounded-2xl p-4 md:p-6 border-l-4 border-purple-500 transition-all duration-300 hover:transform hover:scale-105 glow-hover">
                             <div class="flex items-center gap-3 mb-3 md:mb-4">
                                 <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-purple-600 flex items-center justify-center text-white">
-                                    <i class="fab fa-telegram"></i>
+                                    <i class="fas fa-gift"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-white text-sm md:text-base">Наш Telegram</h3>
-                                    <p class="text-xs text-gray-400">Всегда актуально</p>
+                                    <h3 class="font-bold text-white text-sm md:text-base">Бонус для подписчиков</h3>
+                                    <p class="text-xs text-gray-400">15 июня, 12:30</p>
                                 </div>
                             </div>
                             <p class="text-gray-300 text-xs md:text-sm leading-relaxed">
-                                Подписывайтесь на наш Telegram канал 
-                                <a href="https://t.me/rooteam" class="text-blue-400 hover:underline font-bold" target="_blank">@rooteam</a> 
-                                для получения последних обновлений и новостей.
+                                Все подписчики нашего Telegram-канала получают приятные бонусы! 
+                                Не забудьте подписаться по <a href="https://t.me/tmdback" class="text-blue-400 hover:underline" target="_blank">ссылке</a>.
                             </p>
                         </div>
                     </div>
@@ -931,7 +1003,6 @@
                     <h2 class="text-2xl font-bold text-white mb-6 md:mb-8 flex items-center gap-3">
                         <i class="fas fa-chart-pie text-purple-400"></i>
                         <span>Ваша статистика</span>
-                        <span class="premium-badge ml-2">PREMIUM</span>
                     </h2>
                     
                     <!-- Mobile Stats Grid -->
@@ -1066,7 +1137,6 @@
                             <i class="fas fa-search"></i>
                         </div>
                         <h2 class="text-xl md:text-2xl font-bold text-white">OSINT - Разведывательный поиск</h2>
-                        <span class="premium-badge ml-2">PREMIUM</span>
                     </div>
 
                     <!-- Выбор типа поиска -->
@@ -1182,10 +1252,10 @@
                         <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl gradient-bg flex items-center justify-center text-white text-lg md:text-xl">
                             <i class="fas fa-crown"></i>
                         </div>
-                        <h2 class="text-xl md:text-2xl font-bold text-white">XMAIL Premium - ВСЁ БЕСПЛАТНО!</h2>
+                        <h2 class="text-xl md:text-2xl font-bold text-white">XMAIL Premium</h2>
                     </div>
 
-                    <!-- Бесплатный Premium баннер -->
+                    <!-- Предзаказ баннер -->
                     <div class="gradient-bg rounded-2xl p-6 md:p-8 mb-6 md:mb-8 relative overflow-hidden">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
                         
@@ -1195,17 +1265,17 @@
                                     <i class="fas fa-gem text-yellow-400 text-2xl"></i>
                                 </div>
                                 <div>
-                                    <span class="premium-badge">БЕСПЛАТНО</span>
-                                    <p class="text-white/80 text-sm mt-1">Все функции разблокированы!</p>
+                                    <span class="premium-badge">ПРЕДЗАКАЗ</span>
+                                    <p class="text-white/80 text-sm mt-1">Откройте доступ первым!</p>
                                 </div>
                             </div>
                             
-                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">PREMIUM АКТИВИРОВАН</h3>
-                            <p class="text-white/80 text-lg mb-6">Все функции XMAIL теперь полностью бесплатны! Ключи нафиг не нужны - всё работает сразу.</p>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">XMAIL PREMIUM КРЯК</h3>
+                            <p class="text-white/80 text-lg mb-6">Станьте одним из первых обладателей премиум-доступа со специальной скидкой 50%!</p>
                             
                             <div class="flex items-center gap-4">
                                 <div class="text-3xl font-bold text-white">
-                                    <span class="text-yellow-400">$0.00</span>
+                                    <span class="text-yellow-400">$00</span>
                                     <span class="text-2xl line-through text-white/50 ml-2">$14.99</span>
                                 </div>
                                 <div class="bg-green-500/20 text-green-400 font-bold px-4 py-2 rounded-lg">
@@ -1218,7 +1288,7 @@
                     <!-- Преимущества Premium -->
                     <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
                         <i class="fas fa-star text-yellow-400"></i>
-                        <span>Что включено в Premium? (ВСЁ БЕСПЛАТНО(хоть тмд не реализовал)!)</span>
+                        <span>Что включено в Premium?</span>
                     </h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
@@ -1229,8 +1299,8 @@
                                     <i class="fas fa-bolt"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-white text-lg mb-2">Все функции разблокированы</h4>
-                                    <p class="text-gray-400">Масса новых функций в релизе, более 20 штук - всё доступно бесплатно!</p>
+                                    <h4 class="font-bold text-white text-lg mb-2">Новые функции</h4>
+                                    <p class="text-gray-400">Масса новых функций в релизе, более 20 штук</p>
                                 </div>
                             </div>
                         </div>
@@ -1268,17 +1338,17 @@
                                     <i class="fas fa-chart-line"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-white text-lg mb-2">Приоритет во всем</h4>
+                                    <h4 class="font-bold text-white text-lg mb-2">Привилегии</h4>
                                     <p class="text-gray-400">Приоритет во всем, начиная с поддержки, заканчивая отправкой писем</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Новые функции -->
+                    <!-- Новые функции (только для Premium) -->
                     <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
                         <i class="fas fa-rocket text-red-400"></i>
-                        <span>Все функции разблокированы:</span>
+                        <span>Новые функции для Premium пользователей:</span>
                     </h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
@@ -1361,18 +1431,48 @@
                         </div>
                     </div>
 
-                    <!-- Информация о команде -->
+                    <!-- Таймер предзаказа -->
                     <div class="glass-dark rounded-2xl p-6 md:p-8 mb-8 text-center">
                         <h4 class="text-lg font-bold text-white mb-4">
-                            <i class="fas fa-users text-blue-400 mr-2"></i>
-                            Сайт ебнут командой:
+                            <i class="fas fa-clock text-yellow-400 mr-2"></i>
+                            Предзаказ доступен:
                         </h4>
-                        <div class="text-3xl font-bold gradient-text mb-4">ROOTEAM</div>
-                        <p class="text-gray-400">
-                            Подписывайтесь на наш Telegram: 
-                            <a href="https://t.me/rooteam" target="_blank" class="text-blue-400 hover:text-blue-300 font-bold">@rooteam</a>
+                        <div class="flex justify-center gap-4 mb-6" id="countdown">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-white bg-blue-500/30 py-3 px-4 rounded-xl">03</div>
+                                <div class="text-gray-400 text-sm mt-2">Дни</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-white bg-blue-500/30 py-3 px-4 rounded-xl">12</div>
+                                <div class="text-gray-400 text-sm mt-2">Часы</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-white bg-blue-500/30 py-3 px-4 rounded-xl">45</div>
+                                <div class="text-gray-400 text-sm mt-2">Минуты</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-white bg-blue-500/30 py-3 px-4 rounded-xl">18</div>
+                                <div class="text-gray-400 text-sm mt-2">Секунды</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-400 text-sm">После окончания таймера цена вернется к стандартной $14.99</p>
+                    </div>
+
+                    <!-- Кнопка покупки и информация -->
+                    <div class="text-center space-y-4">
+                        <button id="buyPremiumBtn" class="gradient-bg text-white font-bold py-4 px-12 rounded-xl hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-3 pulse-glow btn-shine text-lg mx-auto">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>КУПИТЬ PREMIUM ЗА $5.00</span>
+                        </button>
+                        
+                        <p class="text-gray-400 text-sm">
+                            Оплата через Telegram бота криптовалютой (USDT)
                         </p>
-                        <p class="text-gray-500 text-sm mt-2">Ключи нафиг не нужны - всё работает сразу и бесплатно!</p>
+                        
+                        <button onclick="openPremiumInfo()" class="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-2 mx-auto">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Как это работает?</span>
+                        </button>
                     </div>
 
                     <!-- Информация о гарантиях -->
@@ -1381,19 +1481,19 @@
                             <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 text-xl mx-auto mb-3">
                                 <i class="fas fa-lock"></i>
                             </div>
-                            <p class="text-gray-300 text-sm">Полная анонимность</p>
+                            <p class="text-gray-300 text-sm">Безопасная оплата</p>
                         </div>
                         <div class="text-center">
                             <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xl mx-auto mb-3">
-                                <i class="fas fa-bolt"></i>
+                                <i class="fas fa-key"></i>
                             </div>
-                            <p class="text-gray-300 text-sm">Все функции бесплатны</p>
+                            <p class="text-gray-300 text-sm">Лицензионный ключ после релиза</p>
                         </div>
                         <div class="text-center">
                             <div class="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 text-xl mx-auto mb-3">
-                                <i class="fab fa-telegram"></i>
+                                <i class="fas fa-headset"></i>
                             </div>
-                            <p class="text-gray-300 text-sm">Поддержка в Telegram</p>
+                            <p class="text-gray-300 text-sm">Приоритетная поддержка</p>
                         </div>
                     </div>
                 </div>
@@ -1403,13 +1503,12 @@
         <!-- Footer -->
         <footer class="mt-8 md:mt-16 text-center text-gray-500 text-sm slide-up" style="animation-delay: 0.8s;">
             <div class="mb-4">
-                <a href="https://t.me/rooteam" target="_blank" class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
+                <a href="https://t.me/tmdback" target="_blank" class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
                     <i class="fab fa-telegram"></i>
-                    <span>Наш Telegram: @rooteam</span>
+                    <span>Наш Telegram канал</span>
                 </a>
             </div>
             <p>© 2026 Xmail | SMTP отправка | Полная анонимность</p>
-            <p class="text-gray-600 mt-2">Сайт ебнут командой <span class="text-blue-400 font-bold">rooteam</span></p>
         </footer>
     </div>
 
@@ -1419,22 +1518,38 @@
     </a>
 
     <script>
-        // Настройки по умолчанию - Premium всегда активен
-        const defaultSettings = {
-            theme: 'dark',
-            language: 'ru',
-            notifications: true,
-            soundNotifications: true,
-            showErrors: true,
-            autoClear: true,
-            premium: true, // Всегда true
-            premiumKey: 'ROOTEAM-FREE-2026',
-            premiumExpiry: '2099-12-31'
-        };
+        // Telegram Bot URL для покупки Premium (ЗАМЕНИТЕ НА ВАШЕГО БОТА)
+        const TELEGRAM_BOT_URL = "https://t.me/rooteam"; // Замените на ссылку вашего бота
+        // Настройки по умолчанию
+const defaultSettings = {
+    theme: 'dark',
+    language: 'ru',
+    notifications: true,
+    soundNotifications: true,
+    showErrors: true,
+    autoClear: true,
+    premium: true, // Всегда true
+    premiumKey: 'PERMANENT_PREMIUM',
+    premiumExpiry: 'permanent' // или дата далеко в будущем
+};
 
-        let currentSettings = {...defaultSettings};
+// Убедитесь, что все проверки премиума всегда возвращают true
+function checkPremiumStatus() {
+    return true; // Всегда возвращает true
+}
 
-        // OSINT Engine
+// Или переопределите геттер для premium
+Object.defineProperty(currentSettings, 'premium', {
+    get: function() {
+        return true;
+    },
+    set: function(value) {
+        // Игнорируем попытки изменить статус
+        console.log('Premium status is permanent');
+    }
+});
+
+        // OSINT Engine (оставляем без изменений)
         class OSINTEngine {
             constructor() {
                 this.currentSearchType = null;
@@ -1725,20 +1840,129 @@
             }
         }
 
+        // Premium функции
+        function openPremiumInfo() {
+            document.getElementById('premiumInfoModal').classList.add('active');
+        }
+
+        function closePremiumInfo() {
+            document.getElementById('premiumInfoModal').classList.remove('active');
+        }
+
+        // Таймер обратного отсчета для предзаказа
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            if (!countdownElement) return;
+
+            // Устанавливаем дату окончания предзаказа (3 дня от текущей даты)
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 3);
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = endDate - now;
+
+                if (distance < 0) {
+                    countdownElement.innerHTML = `
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-red-400">Предзаказ завершен!</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                const daysElement = countdownElement.querySelector('div:nth-child(1) div');
+                const hoursElement = countdownElement.querySelector('div:nth-child(2) div');
+                const minutesElement = countdownElement.querySelector('div:nth-child(3) div');
+                const secondsElement = countdownElement.querySelector('div:nth-child(4) div');
+
+                if (daysElement) daysElement.textContent = days.toString().padStart(2, '0');
+                if (hoursElement) hoursElement.textContent = hours.toString().padStart(2, '0');
+                if (minutesElement) minutesElement.textContent = minutes.toString().padStart(2, '0');
+                if (secondsElement) secondsElement.textContent = seconds.toString().padStart(2, '0');
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        // Кнопка покупки Premium
+        document.getElementById('buyPremiumBtn').addEventListener('click', function() {
+            // Переадресация в Telegram бота
+            window.open(TELEGRAM_BOT_URL, '_blank');
+            showToast('Открываем Telegram бота для покупки Premium...', 'info');
+        });
+
+        // Активация Premium ключа
+        function activatePremium() {
+            const licenseKey = document.getElementById('licenseKeyInput').value.trim();
+            
+            if (!licenseKey || licenseKey.length < 10) {
+                showToast('Введите корректный лицензионный ключ', 'error');
+                return;
+            }
+
+            // В реальном проекте здесь должен быть запрос к API для проверки ключа
+            // Для демо-режима имитируем успешную активацию
+            showToast('Проверяем лицензионный ключ...', 'info');
+            
+            setTimeout(() => {
+                // Имитация успешной активации
+                currentSettings.premium = true;
+                currentSettings.premiumKey = licenseKey;
+                currentSettings.premiumExpiry = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(); // 1 год
+                
+                saveSettings();
+                showToast('Premium успешно активирован!', 'success');
+                
+                // Обновляем интерфейс
+                updatePremiumUI();
+                closeSettings();
+            }, 2000);
+        }
+
+        // Обновление UI при наличии Premium
+        function updatePremiumUI() {
+            if (currentSettings.premium) {
+                // Добавляем значок Premium к заголовку
+                const header = document.querySelector('h1');
+                if (header && !header.querySelector('.premium-badge')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'premium-badge ml-3';
+                    badge.textContent = 'PREMIUM';
+                    header.appendChild(badge);
+                }
+                
+                // Обновляем раздел активации
+                document.getElementById('premiumActivationSection').innerHTML = `
+                    <div class="bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 rounded-xl p-4 text-center">
+                        <div class="flex items-center justify-center gap-3 mb-2">
+                            <i class="fas fa-crown text-yellow-400 text-2xl"></i>
+                            <span class="text-white font-bold text-lg">Premium активирован</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">Действует до: ${new Date(currentSettings.premiumExpiry).toLocaleDateString('ru-RU')}</p>
+                    </div>
+                `;
+            }
+        }
+
         // Загрузка настроек
         function loadSettings() {
             const savedSettings = localStorage.getItem('xmailSettings');
             if (savedSettings) {
                 try {
                     currentSettings = {...defaultSettings, ...JSON.parse(savedSettings)};
+                    applySettings();
+                    updatePremiumUI();
                 } catch (e) {
                     console.error('Error loading settings:', e);
                 }
             }
-            // Всегда активируем Premium
-            currentSettings.premium = true;
-            applySettings();
-            updatePremiumUI();
         }
 
         // Сохранение настроек
@@ -1750,11 +1974,6 @@
                 currentSettings.soundNotifications = document.getElementById('soundToggle').checked;
                 currentSettings.showErrors = document.getElementById('showErrorsToggle').checked;
                 currentSettings.autoClear = document.getElementById('autoClearToggle').checked;
-                
-                // Всегда активируем Premium
-                currentSettings.premium = true;
-                currentSettings.premiumKey = 'ROOTEAM-FREE-2026';
-                currentSettings.premiumExpiry = '2099-12-31';
                 
                 localStorage.setItem('xmailSettings', JSON.stringify(currentSettings));
                 applySettings();
@@ -1791,30 +2010,12 @@
             }
         }
 
-        // Обновление UI при наличии Premium
-        function updatePremiumUI() {
-            // Всегда показываем Premium как активный
-            const header = document.querySelector('h1');
-            if (header) {
-                // Добавляем или обновляем значок Premium
-                let badge = header.querySelector('.premium-badge');
-                if (!badge) {
-                    badge = document.createElement('span');
-                    badge.className = 'premium-badge ml-3';
-                    header.appendChild(badge);
-                }
-                badge.textContent = 'PREMIUM';
-            }
-        }
-
         // Сброс настроек
         function resetSettings() {
             if (confirm('Вы уверены, что хотите сбросить все настройки к значениям по умолчанию?')) {
-                // При сбросе все равно оставляем Premium активным
                 currentSettings = {...defaultSettings};
-                currentSettings.premium = true;
                 saveSettings();
-                showToast('Настройки сброшены. Premium остался активным!', 'info');
+                showToast('Настройки сброшены', 'info');
             }
         }
 
@@ -1889,6 +2090,14 @@
         function openSettings() {
             loadSettings();
             document.getElementById('settingsModal').classList.add('active');
+            
+            // Показываем/скрываем секцию активации Premium
+            const activationSection = document.getElementById('premiumActivationSection');
+            if (currentSettings.premium) {
+                updatePremiumUI();
+            } else {
+                activationSection.style.display = 'block';
+            }
         }
 
         function closeSettings() {
@@ -1904,6 +2113,12 @@
         document.getElementById('mobileMenu').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeMobileMenu();
+            }
+        });
+
+        document.getElementById('premiumInfoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePremiumInfo();
             }
         });
 
@@ -1991,10 +2206,15 @@
                 if (tabId === 'stats') {
                     setTimeout(updateStats, 300);
                 }
+                
+                // Если открыли Premium таб, запускаем таймер
+                if (tabId === 'premium') {
+                    setTimeout(startCountdown, 300);
+                }
             });
         });
 
-        // Функции для отправки email
+        // Функции для отправки email (остаются без изменений)
         const emailForm = document.getElementById('emailForm');
         const sendBtn = document.getElementById('sendBtn');
         const statusContainer = document.getElementById('status');
@@ -2394,6 +2614,7 @@
             loadSettings();
             loadStats();
             initActivityChart();
+            startCountdown(); // Запускаем таймер предзаказа
             
             document.querySelectorAll('.slide-up').forEach((el, index) => {
                 el.style.animationDelay = `${index * 0.1}s`;
@@ -2401,9 +2622,6 @@
             
             // Показываем форму поиска по IP по умолчанию
             showSearchForm('ip');
-            
-            // Показываем сообщение о бесплатном Premium
-            showToast('Premium активирован! Все функции бесплатны!', 'success');
         });
 
         window.addEventListener('resize', handleResize);
